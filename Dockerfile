@@ -30,5 +30,9 @@ RUN useradd -m loki247 && echo "loki247:felipe" | chpasswd
 
 WORKDIR /var/www/html
 
+COPY . .
+
+RUN chown -R www-data:www-data /var/www/html
+
 EXPOSE 32
 EXPOSE 80
