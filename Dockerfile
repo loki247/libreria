@@ -26,13 +26,13 @@ COPY docker_config/web.conf /etc/apache2/sites-available/web.conf
 
 RUN a2dissite 000-default.conf && a2ensite web.conf && a2enmod rewrite
 
-RUN useradd -m loki247 && echo "loki247:felipe" | chpasswd
+#RUN useradd -m loki247 && echo "loki247:felipe" | chpasswd
 
 WORKDIR /var/www/html
 
 COPY . .
 
-RUN chown -R www-data:www-data /var/www/html
+#RUN chown -R www-data:www-data /var/www/html
 
 RUN pwd
 RUN ls -lah
