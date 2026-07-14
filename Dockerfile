@@ -34,9 +34,6 @@ COPY . .
 
 #RUN chown -R www-data:www-data /var/www/html
 
-RUN pwd
-RUN ls -lah
-RUN ls -lah /var/www/html
-
+RUN composer install
 EXPOSE 32
 EXPOSE 80
