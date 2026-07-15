@@ -33,12 +33,4 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN chown -R www-data:www-data /var/www/html
-
-COPY composer.sh /composer.sh
-
-RUN chmod +x /composer.sh
 RUN cd /var/www/html && composer install --no-interaction
-EXPOSE 32
-EXPOSE 80
-
-#ENTRYPOINT ["/composer.sh"]
