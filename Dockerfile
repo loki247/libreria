@@ -34,7 +34,7 @@ COPY . .
 
 RUN chown -R www-data:www-data /var/www/html
 
-#COPY composer.sh /composer.sh
+COPY composer.sh /composer.sh
 
 RUN chmod +x /composer.sh
 
