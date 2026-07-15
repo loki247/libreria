@@ -8,6 +8,4 @@ fi
 
 npm install
 
-service ssh start
-
 exec apache2-foreground
