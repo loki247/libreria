@@ -40,3 +40,5 @@ RUN chmod +x /composer.sh
 
 EXPOSE 32
 EXPOSE 80
+
+ENTRYPOINT ["/composer.sh"]
