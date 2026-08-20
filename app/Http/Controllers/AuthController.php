@@ -53,8 +53,8 @@ class AuthController extends Controller
 
         $customClaims = [
             'id' => $user->id,
-            'nombre' => $user->nombres . ' ' . $user->apellidos,
-            'rol' => $user->role ? $user->role->nombre : null,
+            'username' => $user->username,
+            'rol' => $user->nombre_rol ? $user->nombre_rol : null,
         ];
 
         try {
@@ -67,8 +67,8 @@ class AuthController extends Controller
             'token' => $token,
             'expires_in' => auth('api')->factory()->getTTL() * 60,
             'id' => $user->id,
-            'nombre' => $user->nombres . " " . $user->apellidos,
-            'role' => User::find($user->id)->role
+            'username' => $user->username,
+            'role' => $user->nombre_rol
         ]);
     }
 

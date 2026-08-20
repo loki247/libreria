@@ -11,7 +11,9 @@ class LibroTomoMapper{
             "id",
             "id_libro",
             "tomo",
-            "ruta")
+            "titulo",
+            "ruta",
+            "portada")
         ->where([
             ['id', $id]
         ])->first();
@@ -22,9 +24,11 @@ class LibroTomoMapper{
             "id",
             "id_libro",
             "tomo",
-            "ruta")
+            "titulo",
+            "ruta",
+            "portada")
         ->where([
             ['id_libro', $idLibro]
-        ])->get();
+        ])->orderBy('tomo', 'asc')->get();
     }
 }

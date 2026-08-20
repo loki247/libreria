@@ -7,15 +7,12 @@ use App\Models\LibroTomo;
 use App\Services\LibroTomoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class LibroTomoController extends Controller
 {
     public function getById($id): LibroTomo{
         $tomos = LibroTomoService::getById($id);
         return $tomos;
-    }
-
-    public function getByIdLibro($idLibro): Collection {
-        return LibroTomoService::getByIdLibro($idLibro);
     }
 }

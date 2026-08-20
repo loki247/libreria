@@ -7,25 +7,27 @@ use App\Models\Auth\User;
 class UserMapper{
     public static function getById($id) {
         return User::select(
-            "usuario.id",
+            "users.id",
+            "users.username",
             "roles.id as id_rol",
             "roles.nombre as nombre_rol",
-            "usuario.rut",
-            "usuario.nombres",
-            "usuario.apellidos",
-            "usuario.email",
-            "usuario.telefono",
-            "usuario.direccion",
-            "comuna.id as id_comuna",
-            "comuna.nombre as nombre_comuna")
-        ->leftjoin("auth.roles", "roles.id", "=", "usuario.id_rol")
-        ->leftjoin("configs.comuna", "comuna.id", "=", "usuario.id_comuna")
+            "users.email")
+        ->leftjoin("roles", "roles.id", "=", "users.role_id")
         ->where([
-            ['usuario.id', $id]
+            ['users.id', $id]
         ])->first();
     }
 
     public static function getByEmail($email){
-        return User::where("email", $email)->first();
+        return User::select(
+            "users.id",
+            "users.username",
+            "roles.id as id_rol",
+            "roles.nombre as nombre_rol",
+            "users.email")
+        ->leftjoin("roles", "roles.id", "=", "users.role_id")
+        ->where([
+            ["email", $email]
+        ])->first();
     }
 }

@@ -8,12 +8,38 @@ use App\Models\LibroAutor;
 use App\Services\LibroService;
 use App\Services\LibroAutorService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class LibroController extends Controller{
-    public function getAll(): Collection {
-        return LibroService::getAll();
+    public function getAll(Request $request): stdClass {
+        $filtros = new stdClass;
+        $filtros->size = $request->size ? $request->size : 10;
+        $filtros->page = $request->page ? $request->page : 1;
+        $filtros->offset = ($request->page - 1) * $request->size;
+        $filtros->search = $request->search;
+
+        return LibroService::getAll($filtros);
+    }
+
+    public function getLibros(Request $request): stdClass {
+        $filtros = new stdClass;
+        $filtros->size = $request->size ? $request->size : 10;
+        $filtros->page = $request->page ? $request->page : 1;
+        $filtros->offset = ($request->page - 1) * $request->size;
+        $filtros->search = $request->search;
+
+        return LibroService::getLibros($filtros);
+    }
+
+    public function getMangas(Request $request): stdClass {
+        $filtros = new stdClass;
+        $filtros->size = $request->size ? $request->size : 10;
+        $filtros->page = $request->page ? $request->page : 1;
+        $filtros->offset = ($request->page - 1) * $request->size;
+        $filtros->search = $request->search;
+
+        return LibroService::getMangas($filtros);
     }
 
     public function getById($id): Libro{

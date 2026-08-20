@@ -3,19 +3,25 @@
 namespace App\Services;
 
 use App\Mappers\AutorMapper;
+use App\Mappers\EstadoLibroMapper;
 use App\Mappers\LibroAutorMapper;
 use App\Mappers\LibroMapper;
 use App\Mappers\LibroTomoMapper;
 use App\Mappers\TipoLibroMapper;
 use App\Models\Libro;
-use Illuminate\Support\Collection;
+use App\Pagination\Pagination;
+use stdClass;
 
 class LibroService{
-    public static function getAll(): Collection {
-        $libros = LibroMapper::getAll();
+    public static function getAll(stdClass $filtros): stdClass {
+        $libros = LibroMapper::getAll($filtros);
+        $pagination = new Pagination();
+        $page = $pagination->setPagination($filtros, $libros);
 
-        foreach($libros as $libro){
-            $libro->tipo_libro = TipoLibroMapper::getById($libro->tipo_libro);
+        foreach($page->data as $libro){
+            $libro->portada = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $libro->portada);
+            $libro->tipoLibro = TipoLibroMapper::getById($libro->tipoLibro);
+            $libro->estadoLibro = EstadoLibroMapper::getById($libro->estadoLibro);
 
             $libroAutores = LibroAutorMapper::getByIdLibro($libro->id);
             $autores = [];
@@ -28,13 +34,63 @@ class LibroService{
             $libro->tomos = LibroTomoMapper::getByIdLibro($libro->id);
         }
 
-        return $libros;
+        return $page;
+    }
+
+    public static function getLibros(stdClass $filtros): stdClass {
+        $libros = LibroMapper::getLibros($filtros);
+        $pagination = new Pagination();
+        $page = $pagination->setPagination($filtros, $libros);
+
+        foreach($page->data as $libro){
+            $libro->portada = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $libro->portada);
+            $libro->tipoLibro = TipoLibroMapper::getById($libro->tipoLibro);
+            $libro->estadoLibro = EstadoLibroMapper::getById($libro->estadoLibro);
+
+            $libroAutores = LibroAutorMapper::getByIdLibro($libro->id);
+            $autores = [];
+
+            foreach($libroAutores as $libroAutor){
+                array_push($autores, AutorMapper::getById($libroAutor->id_autor));
+            }
+
+            $libro->autores = $autores;
+            $libro->tomos = LibroTomoMapper::getByIdLibro($libro->id);
+        }
+
+        return $page;
+    }
+
+    public static function getMangas(stdClass $filtros): stdClass {
+        $libros = LibroMapper::getMangas($filtros);
+        $pagination = new Pagination();
+        $page = $pagination->setPagination($filtros, $libros);
+
+        foreach($page->data as $libro){
+            $libro->portada = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $libro->portada);
+            $libro->tipoLibro = TipoLibroMapper::getById($libro->tipoLibro);
+            $libro->estadoLibro = EstadoLibroMapper::getById($libro->estadoLibro);
+
+            $libroAutores = LibroAutorMapper::getByIdLibro($libro->id);
+            $autores = [];
+
+            foreach($libroAutores as $libroAutor){
+                array_push($autores, AutorMapper::getById($libroAutor->id_autor));
+            }
+
+            $libro->autores = $autores;
+            $libro->tomos = LibroTomoMapper::getByIdLibro($libro->id);
+        }
+
+        return $page;
     }
 
     public static function getById($id): Libro{
         $libro = LibroMapper::getById($id);
 
-        $libro->tipo_libro = TipoLibroMapper::getById($libro->tipo_libro);
+        $libro->portada = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $libro->portada);
+        $libro->tipoLibro = TipoLibroMapper::getById($libro->tipoLibro);
+        $libro->estadoLibro = EstadoLibroMapper::getById($libro->estadoLibro);
 
         $libroAutores = LibroAutorMapper::getByIdLibro($libro->id);
         $autores = [];
@@ -45,6 +101,11 @@ class LibroService{
 
         $libro->autores = $autores;
         $libro->tomos = LibroTomoMapper::getByIdLibro($id);
+
+        foreach($libro->tomos as $tomo){
+            $tomo->portada = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $tomo->portada);
+            $tomo->ruta = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $tomo->ruta);
+        }
 
         return $libro;
     }
