@@ -105,8 +105,13 @@ class LibroService{
         $libro->tomos = LibroTomoMapper::getByIdLibro($id);
 
         foreach($libro->tomos as $tomo){
-            $tomo->lectura = LecturaLibroMapper::getByIdTomoUsuario($tomo->id, Auth::user()->id)  ;
+            if(Auth::user()){
+                $tomo->lectura = LecturaLibroMapper::getByIdTomoUsuario($tomo->id, Auth::user()->id);
+            }else{
+                $tomo->lectura = null;
+            }
         }
+
         foreach($libro->tomos as $tomo){
             $tomo->portada = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $tomo->portada);
             $tomo->ruta = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $tomo->ruta);
