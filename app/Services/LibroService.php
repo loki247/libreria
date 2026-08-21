@@ -4,12 +4,14 @@ namespace App\Services;
 
 use App\Mappers\AutorMapper;
 use App\Mappers\EstadoLibroMapper;
+use App\Mappers\LecturaLibroMapper;
 use App\Mappers\LibroAutorMapper;
 use App\Mappers\LibroMapper;
 use App\Mappers\LibroTomoMapper;
 use App\Mappers\TipoLibroMapper;
 use App\Models\Libro;
 use App\Pagination\Pagination;
+use Illuminate\Support\Facades\Auth;
 use stdClass;
 
 class LibroService{
@@ -102,6 +104,9 @@ class LibroService{
         $libro->autores = $autores;
         $libro->tomos = LibroTomoMapper::getByIdLibro($id);
 
+        foreach($libro->tomos as $tomo){
+            $tomo->lectura = LecturaLibroMapper::getByIdTomoUsuario($tomo->id, Auth::user()->id)  ;
+        }
         foreach($libro->tomos as $tomo){
             $tomo->portada = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $tomo->portada);
             $tomo->ruta = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $tomo->ruta);
