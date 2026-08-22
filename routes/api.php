@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LecturaLibroController;
 use App\Http\Controllers\LibroController;
@@ -24,8 +25,10 @@ Route::prefix('libros')->group(function () {
 
 Route::middleware(['auth:api'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/users/{username}', [UserController::class, 'getByUsername']);
 
     Route::prefix('lecturas')->group(function () {
+        Route::get('/{idUsuario}', [LecturaLibroController::class, 'getByUsuario']);
         Route::get('/{idTomo}/{idUsuario}', [LecturaLibroController::class, 'getByIdTomoUsuario']);
         Route::post('/', [LecturaLibroController::class, 'saveLectura']);
         Route::put('/', [LecturaLibroController::class, 'updateLectura']);

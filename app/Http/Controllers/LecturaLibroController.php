@@ -23,6 +23,18 @@ class LecturaLibroController extends Controller
         return response()->json($lectura);
     }
 
+    public function getByUsuario(int $idUsuario) {
+        $lectura = LecturaLibroService::getByUsuario($idUsuario);
+
+        /*if ($lectura === null) {
+            return response()->json([
+                'message' => 'No existe una lectura para este tomo y usuario'
+            ], 404);
+        }*/
+
+        return $lectura;
+    }
+
     public function saveLectura(Request $request) {
         DB::beginTransaction();
         try {
@@ -34,6 +46,8 @@ class LecturaLibroController extends Controller
             LecturaLibroService::saveLectura($lectura);
 
             DB::commit();
+
+            return $lectura->id;
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;

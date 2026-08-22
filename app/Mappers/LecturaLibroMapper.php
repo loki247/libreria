@@ -13,6 +13,12 @@ class LecturaLibroMapper{
         ])->first();
     }
 
+    public static function getByUsuario(int $idUsuario) {
+        return LecturaLibro::where([
+            ['id_usuario', $idUsuario],
+        ])->get();
+    }
+
     public static function saveLectura(LecturaLibro $lectura){
         $lectura->save();
     }

@@ -30,4 +30,18 @@ class UserMapper{
             ["email", $email]
         ])->first();
     }
+
+    public static function getByUsername($username){
+        return User::select(
+            "users.id",
+            "users.username",
+            "roles.id as idRol",
+            "roles.nombre as nombreRol",
+            "users.email",
+            "users.foto_perfil as fotoPerfil")
+        ->leftjoin("roles", "roles.id", "=", "users.role_id")
+        ->where([
+            ["username", $username]
+        ])->first();
+    }
 }

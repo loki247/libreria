@@ -11,4 +11,8 @@ class UserController extends Controller
     public function getById($id) {
         return UserService::getById($id);
     }
+
+    public function getByUsername($username) {
+        return UserService::getByUsername($username);
+    }
 }

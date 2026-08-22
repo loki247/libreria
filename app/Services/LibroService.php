@@ -87,7 +87,7 @@ class LibroService{
         return $page;
     }
 
-    public static function getById($id): Libro{
+    public static function getById($id): Libro {
         $libro = LibroMapper::getById($id);
 
         $libro->portada = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $libro->portada);

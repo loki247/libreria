@@ -12,4 +12,8 @@ class UserService{
     public static function getByEmail($email){
         return UserMapper::getByEmail($email);
     }
+
+    public static function getByUsername($username){
+        return UserMapper::getByUsername($username);
+    }
 }
