@@ -8,6 +8,11 @@ use Illuminate\Support\Collection;
 
 class LibroTomoService{
     public static function getById($id): LibroTomo {
-        return LibroTomoMapper::getById($id);
+        $tomo = LibroTomoMapper::getById($id);
+
+        $tomo->portada = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $tomo->portada);
+        $tomo->ruta = env("URL_ARCHIVOS", "") . str_replace(" ", "%20", $tomo->ruta);
+
+        return $tomo;
     }
 }
